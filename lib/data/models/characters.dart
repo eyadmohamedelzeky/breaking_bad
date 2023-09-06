@@ -3,7 +3,7 @@ class Character {
   String? name;
   String? status;
   String? species;
-  String? image;
+ late String image;
   List<dynamic>? episode;
 
   Character.fromjson(Map<String, dynamic> json) {

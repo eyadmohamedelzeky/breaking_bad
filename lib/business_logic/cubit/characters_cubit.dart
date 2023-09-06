@@ -8,7 +8,7 @@ part 'characters_state.dart';
 // implement logic and manage state to navigate to ui
 class CharactersCubit extends Cubit<CharactersState> {
   final CharacterRepository characterRepository;
- late List<Character> characters;
+  List<Character> characters=[];
   CharactersCubit(this.characterRepository) : super(CharactersInitial());
 
   List<Character>getAllCharater(){

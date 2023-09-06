@@ -57,8 +57,9 @@ return showLoadingIndicator();
        shrinkWrap: true,
        physics: ClampingScrollPhysics(),
        padding: EdgeInsets.zero,
+       itemCount: allCharacters.length,
        itemBuilder: (ctx,index){
-     return CharacterItem();
+     return CharacterItem(character: allCharacters[index],);
        });
   }
   @override
@@ -68,7 +69,7 @@ return showLoadingIndicator();
         backgroundColor: MyColor.myYellow,
         title: Text('Characters',style: TextStyle(color: MyColor.Mygrey),),
       ),
-
+body:buildBlocWidget(),
     );
   }
 }
