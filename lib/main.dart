@@ -1,14 +1,10 @@
 import 'package:breaking_bad/app_router.dart';
-import 'package:breaking_bad/data/repository/character_repository.dart';
-import 'package:breaking_bad/data/web_services/character_web_service.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(BreakingBadApp(
     appRouter: AppRouter(),
   ),);
-  CharacterRepository(CharactersWebServices()).getAllCharater();
-
 }
 
 class BreakingBadApp extends StatelessWidget {

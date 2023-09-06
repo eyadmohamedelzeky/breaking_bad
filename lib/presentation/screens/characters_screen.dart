@@ -14,6 +14,62 @@ class CharactersScreen extends StatefulWidget {
 
 class _CharactersScreenState extends State<CharactersScreen> {
  late List<Character>allCharacters;
+ late List<Character>searchedForCharacters;
+ bool isSearching=false;
+ final searchTextController=TextEditingController();
+
+ Widget buildSearchField(){
+   return TextField(
+     controller: searchTextController,
+     cursorColor: MyColor.Mygrey,
+     decoration: InputDecoration(hintText: 'Find a Character',border: InputBorder.none,hintStyle: TextStyle(color:MyColor.Mygrey,fontSize: 18 )),
+style: TextStyle(color: MyColor.Mygrey,fontSize: 18),
+   onChanged: (searchCharacter) {
+     addSearchedForItemToSearchedList(searchCharacter);
+   },
+   );
+ }
+ void addSearchedForItemToSearchedList(String searchCharacter) {
+   searchedForCharacters=allCharacters.where((character) =>character.name!.toLowerCase().startsWith(searchCharacter)).toList();
+ setState(() {});
+ }
+ List <Widget> buildAppBarActions(){
+   if(isSearching){
+     return [
+       IconButton(onPressed: (){
+         clearSearch();
+         Navigator.pop(context);
+       }, icon: Icon(Icons.clear,color: MyColor.Mygrey,))
+     ];
+   }else{
+     return [
+       IconButton(
+           onPressed:startSearching
+           , icon:Icon(Icons.search,color: MyColor.Mygrey,))
+     ];
+   }
+ }
+ void startSearching() {
+  ModalRoute.of(context)!.addLocalHistoryEntry(LocalHistoryEntry(onRemove: stopSearching));
+
+  setState(() {
+    isSearching=true;
+  });
+ }
+ void stopSearching() {
+   clearSearch();
+   setState(() {
+     isSearching=false;
+   });
+ }
+ void clearSearch() {
+   setState(() {
+     searchTextController.clear();
+   });
+ }
+ Widget buildAppBarTitle(){
+   return Text('Characters',style: TextStyle(color: MyColor.Mygrey),);
+ }
  @override
   void initState() {
     super.initState();
@@ -57,17 +113,20 @@ return showLoadingIndicator();
        shrinkWrap: true,
        physics: ClampingScrollPhysics(),
        padding: EdgeInsets.zero,
-       itemCount: allCharacters.length,
+       itemCount:searchTextController.text.isEmpty? allCharacters.length:searchedForCharacters.length,
        itemBuilder: (ctx,index){
-     return CharacterItem(character: allCharacters[index],);
+     return CharacterItem(character:searchTextController.text.isEmpty? allCharacters[index]:searchedForCharacters[index],);
        });
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: isSearching?BackButton(color: MyColor.Mygrey,):Container(),
         backgroundColor: MyColor.myYellow,
-        title: Text('Characters',style: TextStyle(color: MyColor.Mygrey),),
+        title: isSearching ? buildSearchField() : buildAppBarTitle(),
+        actions: buildAppBarActions(),
+
       ),
 body:buildBlocWidget(),
     );

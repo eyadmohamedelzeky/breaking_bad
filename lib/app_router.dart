@@ -1,5 +1,6 @@
 import 'package:breaking_bad/business_logic/cubit/characters_cubit.dart';
 import 'package:breaking_bad/constants/strings.dart';
+import 'package:breaking_bad/data/models/characters.dart';
 import 'package:breaking_bad/data/repository/character_repository.dart';
 import 'package:breaking_bad/data/web_services/character_web_service.dart';
 import 'package:breaking_bad/presentation/screens/character_detail.dart';
@@ -23,8 +24,9 @@ class AppRouter {
           ),
         );
       case characterDetailScreen:
+        final character=settings.arguments as Character;
         return MaterialPageRoute(
-          builder: (_) => CharacterDetailScreen(),
+          builder: (_) => CharacterDetailScreen(character: character,),
         );
     }
   }
